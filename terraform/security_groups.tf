@@ -36,3 +36,19 @@ resource "aws_security_group" "db-sg" {
     Name = "${var.aws_profile}-database-sg"
   }
 }
+
+resource "aws_security_group" "lambda_sg" {
+  name        = "${var.aws_profile}-lambda-sg"
+  description = "lambda security group to allow inbound/outbound from the VPC"
+  vpc_id      = aws_vpc.dev_vpc.id
+  depends_on  = [aws_vpc.dev_vpc]
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "${var.aws_profile}-lambda-sg"
+  }
+}
